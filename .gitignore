@@ -1,0 +1,10 @@
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.png
+*.PNG
+
+*.pyc
+
+*Env
