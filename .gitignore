@@ -1,10 +1,15 @@
+#media
 *.jpg
 *.jpeg
 *.JPG
 *.JPEG
 *.png
 *.PNG
+*.mp4
+*.MP4
 
+#bytecode
 *.pyc
 
+#environment
 *Env
