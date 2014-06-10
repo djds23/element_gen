@@ -1,5 +1,7 @@
 from prep_elements import Element
 
+import pytest
+
 import os
 
 def test_elements():
@@ -7,3 +9,5 @@ def test_elements():
     before = os.listdir('.')
     test.create_background()
     assert before != os.listdir('.')
+    with pytest.raises(NameError) as execinfo:
+        bad = Element(filename='bad_filename')
