@@ -14,6 +14,7 @@ class Element(object):
         self.author = author
         if self.filename.endswith('.jpg' or '.png'):
             self.blurred = str(uuid.uuid4()) + '.png'
+            self.rectangle = str(uuid.uuid4())+ '.png'
         else:
             raise NameError('File is not .jpg or .png!')
     
@@ -30,7 +31,8 @@ class Element(object):
     def create_rectangle(self):
         with Color('white') as color:
             with Image(width=self.width, height=self.height, background=color) as image:
-                image.save(str(uuid.uuid4()) +'.png')
+                image.save(filename=self.rectangle)
+                return self.rectangle
 
 
     def create_background(self):
