@@ -5,16 +5,16 @@ import uuid
 
 import os 
 
-class Elements(object):
+class Element(object):
 
-    def __init__(filename=None, quote=None, author=None):
+    def __init__(self, filename=None, quote=None, author=None):
         self.filename = filename
         self.quote = quote
         self.author = author
 
-    def create_background():
+    def create_background(self):
         if self.filename.endswith('.jpg' or '.png'):
-            self.blurred = uuid.uuid4() + '.png'
+            self.blurred = str(uuid.uuid4()) + '.png'
             with Image(filename=self.filename) as img:
                 with img.clone() as blurred:
                     blurred.gaussian_blur(0,6)
