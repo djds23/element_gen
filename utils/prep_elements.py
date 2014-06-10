@@ -1,5 +1,6 @@
 from wand.image import Image
 from wand.color import Color
+from wand.drawing import Drawing
 
 import uuid
 
@@ -15,11 +16,25 @@ class Element(object):
             self.blurred = str(uuid.uuid4()) + '.png'
         else:
             raise NameError('File is not .jpg or .png!')
- 
-    def 
+    
+    def format_content(self):
+        '''
+        There should be logic to control the quote.
+        Make sure quote is not too long, make sure the rectangle
+        will fit the quote
+        '''
+        self.width=800
+        self.height=400
+        pass
+
+    def create_rectangle(self):
+        with Color('white') as color:
+            with Image(width=self.width, height=self.height, background=color) as image:
+                image.save(str(uuid.uuid4()) +'.png')
 
 
     def create_background(self):
+        '''create image and return the name of the new file'''
         with Image(filename=self.filename) as img:
             with img.clone() as blurred:
                 blurred.gaussian_blur(0,6)
