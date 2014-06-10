@@ -6,9 +6,13 @@ import pytest
 import os
 
 def test_elements():
-    test = Element(filename='test.jpg')
+    test = Element(filename='test.jpg', text='Hello World')
     before = os.listdir('.')
+    test.format_content()
     test.create_background()
-    assert before != os.listdir('.')
+    test.create_rectangle()
+    test.merge()
+    assert len(os.listdir('.'))-len(before)==3
     with pytest.raises(NameError) as execinfo:
         bad = Element(filename='bad_filename')
+
