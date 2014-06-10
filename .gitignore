@@ -13,3 +13,7 @@
 
 #environment
 *Env
+
+#pytest files
+
+__pycache__
