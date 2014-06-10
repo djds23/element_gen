@@ -16,10 +16,12 @@ class Element(object):
         else:
             raise NameError('File is not .jpg or .png!')
  
+    def 
+
 
     def create_background(self):
         with Image(filename=self.filename) as img:
             with img.clone() as blurred:
                 blurred.gaussian_blur(0,6)
                 blurred.save(filename=self.blurred)
-        
+        return self.blurred

@@ -4,5 +4,7 @@ decorator==3.4.0
 ipython==2.1.0
 moviepy==0.2.1.8
 numpy==1.8.1
+py==1.4.20
+pytest==2.5.2
 tqdm==1.0
 wsgiref==0.1.2
