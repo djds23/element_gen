@@ -16,4 +16,7 @@
 
 #pytest files
 
+#fonts
+*.ttf
+*.otf
 __pycache__
