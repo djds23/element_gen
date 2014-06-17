@@ -7,6 +7,7 @@ import moviepy.editor
 import uuid
 import math
 import os
+import re
 
 class Element(object):
     '''Construct the video, all resolutions set to be 1280x720'''
@@ -44,23 +45,34 @@ class Element(object):
     def size_rectangle(self):
         '''Determine the size of inner rectangle'''
         ratio = 1.61803398875
-        quote = '\"' + self.quote + '\"'
-        character_length=len(quote)
+        self.quote = '\"' + self.quote + '\"'
+        character_length=len(self.quote)
         area_per_char = character_length/ratio
         self.font_size = int(math.sqrt(area_per_char))
-        self.start_width = (self.width-self.inner_width) + (self.font_size+1)
-        self.start_height = (self.height-self.inner_height) + (self.font_size+1)
+        width_margin = (self.width-self.inner_width)/2
+        height_margin = (self.height-self.inner_height)/2
+        self.start_width = width_margin + self.font_size + 1
+        self.start_height = height_margin + self.font_size+ 1
+        char_per_line = self.inner_width/self.font_size + 1
+        num_of_lines = self.inner_height/self.font_size + 1
+        self.clips = []
+        original = self.quote
+        start_height = self.start_height
+        for line in range(num_of_lines):
+            segment = moviepy.editor.TextClip(original[:70], fontsize=self.font_size, font='Century-Schoolbook-L-Roman')
+            segment = segment.set_pos((self.start_width, start_height)).set_duration(self.duration)
+            start_height += (self.font_size+1)
+            self.clips.append(segment)
 
     def merge(self):
         background = moviepy.editor.ImageClip(self.blurred)
-        rectangle = moviepy.editor.ImageClip(self.rectangle)
-        quote = moviepy.editor.TextClip(self.quote,fontsize=self.font_size,
-                font='Century-Schoolbook-L-Roman')
-        author = moviepy.editor.TextClip(self.author, fontsize=self.font_size,
-                font='Century-Schoolbook-L-Roman')
-        video = moviepy.editor.CompositeVideoClip([
-            background.set_duration(self.duration),
-            rectangle.set_pos('center').set_duration(self.duration),
-            quote.set_pos((self.start_width, self.start_height)).set_duration(self.duration),
-            author.set_pos((720,500)).set_duration(self.duration)])
-        video.to_videofile(self.video, fps=60)
+        background = background.set_duration(self.duration)
+        rectangle = moviepy.editor.ImageClip(self.rectangle).set_pos('center')
+        rectangle = rectangle.set_duration(self.duration)
+        author = moviepy.editor.TextClip(self.author, fontsize=self.font_size, font='Century-Schoolbook-L-Roman')
+        author = author.set_pos((720,500)).set_duration(self.duration)
+        self.clips.insert(0, background)
+        self.clips.insert(1, rectangle)
+        self.clips.insert(2, author)
+        video = moviepy.editor.CompositeVideoClip(self.clips)
+        video.to_videofile(self.video, fps=24)
