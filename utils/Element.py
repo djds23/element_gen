@@ -59,9 +59,11 @@ class Element(object):
         original = self.quote
         start_height = self.start_height
         for line in range(num_of_lines):
-            segment = moviepy.editor.TextClip(original[:70], fontsize=self.font_size, font='Century-Schoolbook-L-Roman')
+            segment = moviepy.editor.TextClip(original[:char_per_line], fontsize=self.font_size, font='Century-Schoolbook-L-Roman')
             segment = segment.set_pos((self.start_width, start_height)).set_duration(self.duration)
-            start_height += (self.font_size+1)
+            if len(original) >= char_per_line:
+                original = original[char_per_line:]
+                start_height += (self.font_size+1)
             self.clips.append(segment)
 
     def merge(self):
