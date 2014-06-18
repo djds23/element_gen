@@ -1,16 +1,23 @@
-from utils.Element import Element
-
-from loremipsum import get_paragraph
-
-import pytest
-
+import random
 import os
 
-text = get_paragraph()
+import pytest
+from loremipsum import get_paragraph, get_sentence
+
+from utils.Element import Element
+
+quote = get_paragraph()
+
+name_pool = get_sentence()
+
+name_pool = name_pool.split()
+
+author = random.choice(name_pool) + ' ' + random.choice(name_pool)
 
 def test_elements():
-    test = Element(filename='test.jpg', quote=text,
-            author='Lorem Ipsum', duration=1)
+    os.system('rm *mp4')
+    test = Element(filename='test.jpg', quote=quote,
+            author=author, duration=1)
     before = os.listdir('.')
     test.create_background()
     test.size_rectangle()
