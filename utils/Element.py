@@ -25,13 +25,11 @@ class Element(object):
             self.video = str(uuid.uuid4()) + '.mp4'
             self.width = 1280
             self.height = 720
-            self.inner_width=906
-            self.inner_height=560
         else:
             raise NameError('File is not .jpg or .png!')
 
 
-    def create_background(self):
+    def blur_background(self):
         '''create image and return the name of the new file'''
         with Image(filename=self.filename) as img:
             with img.clone() as blurred:
@@ -41,14 +39,16 @@ class Element(object):
     def size_rectangle(self):
         '''Determine the size of inner rectangle'''
         ratio = 1.61803398875
+        self.inner_width = int(self.width/ratio)
+        self.inner_height = int(self.height/ratio)
         self.quote = '\"' + self.quote + '\"'
-        character_length=len(self.quote)
-        area_per_char = character_length #/ratio
-        self.font_size = int(math.sqrt(area_per_char))
+        character_length = len(self.quote)
+        not_area = (character_length * 2)/ratio
+        self.font_size = int(math.sqrt(not_area))
         self.width_margin = (self.width-self.inner_width)/2
         self.height_margin = (self.height-self.inner_height)/2
         self.start_width = self.width_margin + self.font_size + 1
-        self.start_height = self.height_margin + self.font_size+ 1
+        self.start_height = self.height_margin + self.font_size + 1
         char_per_line = (self.inner_width/self.font_size) * 2
         num_of_lines = self.inner_height/self.font_size + 1
         self.clips = []
@@ -72,6 +72,7 @@ class Element(object):
         with Color('white') as color:
             with Image(width=self.inner_width, height=self.inner_height,
                     background=color) as image:
+                image.save(filename=self.rectangle)
 
     def merge(self):
         background = moviepy.editor.ImageClip(self.blurred)

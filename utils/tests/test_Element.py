@@ -15,7 +15,11 @@ name_pool = name_pool.split()
 author = random.choice(name_pool) + ' ' + random.choice(name_pool)
 
 def test_elements():
-    os.system('rm *mp4')
+    try:
+        os.system('rm *mp4')
+        os.system('rm *png')
+    except:
+        pass
     test = Element(filename='test.jpg', quote=quote,
             author=author, duration=1)
     before = os.listdir('.')
@@ -27,5 +31,4 @@ def test_elements():
     assert len(os.listdir('.'))-len(before)==3
     with pytest.raises(NameError) as execinfo:
         bad = Element(filename='bad_filename')
-    os.system('rm *png')
     os.system('ffplay *mp4')
