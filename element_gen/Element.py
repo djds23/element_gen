@@ -79,6 +79,7 @@ class Element(object):
                 image.save(filename=self.rectangle)
 
     def merge(self):
+        '''take all parts and make a movie!'''
         background = moviepy.editor.ImageClip(self.blurred)
         background = background.set_duration(self.duration)
         rectangle = moviepy.editor.ImageClip(self.rectangle).set_pos('center')
