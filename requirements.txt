@@ -1,9 +1,10 @@
 Wand==0.3.7
 argparse==1.2.1
+beautifulsoup4==4.3.2
 decorator==3.4.0
 ipython==2.1.0
 loremipsum==1.0.2
-moviepy==0.2.1.8
+moviepy==0.2.1.8.05
 numpy==1.8.1
 py==1.4.20
 pytest==2.5.2

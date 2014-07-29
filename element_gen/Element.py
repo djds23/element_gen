@@ -11,7 +11,10 @@ from wand.drawing import Drawing
 
 
 class Element(object):
-    '''Construct the video, all resolutions set to be 1280x720'''
+    '''Construct the video, all resolutions set to be 1280x720
+       Filename in this context refers to the source file,
+       remember this was originally developed to create title screens
+    '''
 
 
     def __init__(self, filename=None, quote='', duration=10, author=''):
@@ -37,7 +40,8 @@ class Element(object):
                 blurred.save(filename=self.blurred)
 
     def size_rectangle(self):
-        '''Determine the size of inner rectangle'''
+        '''Determine the size of inner rectangle, bloated and
+        poorly executed'''
         ratio = 1.61803398875
         self.inner_width = int(self.width/ratio)
         self.inner_height = int(self.height/ratio)

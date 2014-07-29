@@ -4,7 +4,7 @@ import os
 import pytest
 from loremipsum import get_paragraph, get_sentence
 
-from utils.Element import Element
+from element_gen.Element import Element
 
 quote = get_paragraph()
 
@@ -23,7 +23,7 @@ def test_elements():
     test = Element(filename='test.jpg', quote=quote,
             author=author, duration=1)
     before = os.listdir('.')
-    test.create_background()
+    test.blur_background()
     test.size_rectangle()
     test.create_rectangle()
     assert isinstance(test.clips, list)
