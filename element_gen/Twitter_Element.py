@@ -20,9 +20,12 @@ class Twitter_Element(object):
         self.username = username
         self.get_tweets(self.username)
         self.tile_photo()
-        self.tweet_canvas(self.tweets[0])
-        self.filename = str(uuid.uuid4())+'.jpg'
-        self.canvas.save(self.filename)
+        self.files = []
+        for tweet in self.tweets:
+            self.tweet_canvas(tweet)
+            self.filename = str(uuid.uuid4())+'.jpg'
+            self.canvas.save(self.filename)
+            self.files.append(self.filename)
 
     def get_tweets(self, username):
         url = urlopen("https://twitter.com//" + self.username)
@@ -76,3 +79,9 @@ class Twitter_Element(object):
             width, height = draw.textsize(line, font)
             draw.text(((max_width-width)/2, max_height), line, color, font)
             max_height += 40
+
+    def merge_tweets(self):
+        image_clips = [moviepy.editor.ImageClip(img) for img in self.files]
+        print image_clips
+        #clips = moviepy.editor.concatenate(image_clips)
+        #clips.write_tofile('output.mp4')
