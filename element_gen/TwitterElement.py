@@ -14,7 +14,7 @@ CONFIGURE = {
         'FONTPATH': '/usr/share/fonts/truetype/freefont/FreeSans.ttf'
         }
 
-class Twitter_Element(object):
+class TwitterElement(object):
 
     def __init__(self, username):
         self.username = username
@@ -23,7 +23,7 @@ class Twitter_Element(object):
         self.files = []
         for tweet in self.tweets:
             self.tweet_canvas(tweet)
-            self.filename = str(uuid.uuid4())+'.jpg'
+            self.filename = str(uuid.uuid4())+'.png'
             self.canvas.save(self.filename)
             self.files.append(self.filename)
 
@@ -81,7 +81,7 @@ class Twitter_Element(object):
             max_height += 40
 
     def merge_tweets(self):
-        image_clips = [moviepy.editor.ImageClip(img) for img in self.files]
-        print image_clips
-        #clips = moviepy.editor.concatenate(image_clips)
-        #clips.write_tofile('output.mp4')
+        self.image_clips = [moviepy.editor.ImageClip(img).set_duration(4)\
+                            for img in self.files]
+        clip = moviepy.editor.concatenate(self.image_clips)
+        clip.to_videofile('output.mp4', fps=24)
