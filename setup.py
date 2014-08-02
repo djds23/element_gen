@@ -14,7 +14,7 @@ class PyTest(Command):
         raise SystemExit(errno)
 
 setup(
-    cmd = {'test':PyTest},
+    cmdclass = {'test':PyTest},
     name='element_gen',
     version='0.1',
     author='Dean Rex Silfen',
