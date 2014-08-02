@@ -32,6 +32,7 @@ class TwitterElement(object):
             raise ValueError('Please provide a username!')
 
     def get_tweets(self, username):
+        '''Pull down the latest tweets from the provided username'''
         url = urlopen("https://twitter.com//" + self.username)
         page = BeautifulSoup(url)
         url.close()
@@ -50,6 +51,7 @@ class TwitterElement(object):
         self.tweets = tweets
 
     def tile_photo(self):
+        '''Creates a mosaic from the users profile picture'''
         canvas_size = (1280,720)
         canvas = Image.new('RGB', canvas_size)
         start_width = int(-self.i_file.size[0]/1.618)
@@ -63,6 +65,7 @@ class TwitterElement(object):
         self.canvas = canvas.filter(ImageFilter.GaussianBlur(12))
 
     def tweet_canvas(self, tweet):
+        '''Makes a canvas for the user's tweets'''
         tweet_canvas_size = (3*self.i_file.size[0], self.i_file.size[1])
         tweet_canvas = Image.new('RGB', tweet_canvas_size, 'white')
         tweet_canvas.paste(self.i_file, (0,0))
@@ -73,6 +76,7 @@ class TwitterElement(object):
         self.canvas.paste(tweet_canvas, (40,160))
 
     def prep_tweet(self, tweet, draw, font=None):
+        '''Encode the tweets as ascii, and wrap the text for the canvas'''
         tweet = tweet.encode('ascii', 'ignore')
         tweet = textwrap.wrap(tweet, 60)
         max_height = 80
@@ -85,6 +89,7 @@ class TwitterElement(object):
             max_height += 40
 
     def merge_tweets(self):
+        '''Make the final slideshow'''
         self.image_clips = [moviepy.editor.ImageClip(img).set_duration(6)\
                             for img in self.files]
         clip = moviepy.editor.concatenate(self.image_clips)
