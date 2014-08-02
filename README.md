@@ -1,8 +1,9 @@
 element_gen
 ===========
 
-Automate the creation of elements with moviepy and wand
+Create video slideshows from your favorite twitter feed!
 
-last update changed a lot, need to hook up new twitter element to other 
+To install it, clone this repo then run ``pip install -r requirements.txt`` and ``pip install -e .``
 
-element functions. also rethink how interface operates
+usage goes as follows,
+
