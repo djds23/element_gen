@@ -1,12 +1,12 @@
-import textwrap
-import uuid
 import os
+import uuid
+import textwrap
+from tempfile import NamedTemporaryFile
+from urllib import urlopen, urlretrieve, urlcleanup
 
 from PIL import Image, ImageFilter, ImageDraw, ImageFont
 
 import moviepy.editor
-
-from urllib import urlopen, urlretrieve, urlcleanup
 
 from bs4 import BeautifulSoup
 
@@ -19,15 +19,10 @@ class TwitterElement(object):
     def __init__(self, username=None):
         if username:
             self.username = username
-            self.get_tweets(self.username)
-            self.tile_photo()
-            self.files = []
-            for tweet in self.tweets:
-                self.tweet_canvas(tweet)
-                self.filename = str(uuid.uuid4())+'.png'
-                self.canvas.save(self.filename)
-                self.files.append(self.filename)
-            self.merge_tweets()
+            self.tempfiles = []
+            random_characters = str(uuid.uuid4())
+            self.slideshow_filename = self.username + random_characters[:6]\
+                                                                        + '.mp4'
         else:
             raise ValueError('Please provide a username!')
 
@@ -44,9 +39,8 @@ class TwitterElement(object):
         prof_pic = [img.attrs["src"] for img in page.findAll("img")
                     if ("class" in img.attrs) and
                     ("ProfileAvatar-image" in img.attrs["class"])]
-        self.profile_photo = str(uuid.uuid4())+'.png'
-        urlretrieve(prof_pic[0], self.profile_photo)
-        urlcleanup()
+        self.profile_photo = urlretrieve(prof_pic[0])
+        self.profile_photo = self.profile_photo[0]
         self.i_file = Image.open(self.profile_photo)
         self.tweets = tweets
 
@@ -91,6 +85,26 @@ class TwitterElement(object):
     def merge_tweets(self):
         '''Make the final slideshow'''
         self.image_clips = [moviepy.editor.ImageClip(img).set_duration(6)\
-                            for img in self.files]
+                            for img in self.tempfiles]
         clip = moviepy.editor.concatenate(self.image_clips)
-        clip.to_videofile(self.username+'.mp4', fps=24)
+        
+        clip.to_videofile(self.slideshow_filename, fps=24)
+
+    def create_slideshow(self):
+        '''Build the slides and perform the cleanup'''
+        self.get_tweets(self.username)
+        self.tile_photo()
+        for tweet in self.tweets:
+            self.tweet_canvas(tweet)
+            self.tempfile = NamedTemporaryFile(suffix='.png', delete=False)
+            self.canvas.save(self.tempfile.name)
+            self.tempfiles.append(self.tempfile.name)
+        self.merge_tweets()
+        return self.slideshow_filename
+
+    def clean_up(self):
+        '''destroy all temporary files created during the render'''
+        for tempfile in self.tempfiles:
+            os.remove(tempfile)
+        urlcleanup()
+
