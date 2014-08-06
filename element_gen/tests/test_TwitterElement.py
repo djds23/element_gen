@@ -5,9 +5,14 @@ import py.test
 from element_gen import TwitterElement
 
 def test_twitter_element():
-    os.system('rm *png *mp4')
     test = TwitterElement('real_lee_silken')
-    assert 'real_lee_silken.mp4' in os.listdir('.')
+    test.create_slideshow()
+    assert test.slideshow_filename in os.listdir('.')
+    for slide in test.tempfiles:
+        assert os.path.exists(slide)
+    test.clean_up()
+    for slide in test.tempfiles:
+        assert os.path.exists(slide) == False
 
 def test_exception():
     with py.test.raises(ValueError):
