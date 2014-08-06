@@ -16,12 +16,15 @@ CONFIGURE = {
 
 class TwitterElement(object):
     '''Write a video from a user's tweets'''
-    def __init__(self, username=None):
+    def __init__(self, username=None, slideshow_filename=None):
         if username:
             self.username = username
             self.tempfiles = []
-            random_characters = str(uuid.uuid4())
-            self.slideshow_filename = self.username + random_characters[:6]\
+            if slideshow_filename:
+                self.slideshow_filename = slideshow_filename
+            else:
+                random_characters = str(uuid.uuid4())
+                self.slideshow_filename = self.username + random_characters[:6]\
                                                                         + '.mp4'
         else:
             raise ValueError('Please provide a username!')
