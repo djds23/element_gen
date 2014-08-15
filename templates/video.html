@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<head>
+  <title>pygotham demo</title>
+</head>
+<body>
+  <video controls loop>
+    {% for video in videos %}
+    <source src="{{ url_for('static', filename=video.filename) }}" type='video/{{ video.suffix[1:] }}'>
+    {% endfor %}
+  </video>
+
