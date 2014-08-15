@@ -5,7 +5,7 @@ import py.test
 from element_gen import TwitterElement
 
 def test_twitter_element():
-    test = TwitterElement('real_lee_silken')
+    test = TwitterElement('dontusethiscode')
     test.create_slideshow()
     assert test.slideshow_filename in os.listdir('.')
     for slide in test.tempfiles:

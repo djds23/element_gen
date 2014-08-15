@@ -25,11 +25,13 @@ def index():
         vid_id = str(uuid.uuid4())[:4]
         supported_codecs = [('libx264', '.mp4'),
                             ('libvpx','.webm'),
-                            ('libtheora','.ogv')]
+                            ('libtheora','.ogg')]
         context = []
         for codec in supported_codecs:
             filename = author + vid_id + codec[1]
-            element.write_videofile(filename, codec=codec[0])
+            element.write_videofile(filename,
+                                    codec=codec[0],
+                                    fps=24)
             shutil.move(filename, destination)
             context.append({'filename' : filename,
                             'suffix': codec[1]})

@@ -1,13 +1,10 @@
 import textwrap
-
-from twittcher import UserWatcher
 import moviepy.editor as moviepy
-
 
 def make_element(quote, author, size):
     signature = (moviepy.TextClip("- %s"%author, fontsize=30,
-                               color='gray',
-                               font="Amiri-Slanted")
+                               color='gray',)
+                               #font="Amiri-Slanted")
                   .margin(right=30, bottom=30, opacity=0)
                   .set_pos(("right","bottom")))
     quote = '\n'.join(textwrap.wrap(quote))
@@ -21,5 +18,3 @@ def make_element(quote, author, size):
                    [signature, quote_clip], size=size, bg_color=(233,229,90))
                     .set_duration(quote_clip.duration))
     return element
-
-#dean.subclip(0,60).write_videofile("output.mp4", bitrate='200k')

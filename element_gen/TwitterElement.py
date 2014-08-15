@@ -25,7 +25,7 @@ class TwitterElement(object):
             else:
                 random_characters = str(uuid.uuid4())
                 self.slideshow_filename = self.username + random_characters[:6]\
-                                                                        + '.mp4'
+                                                                        + '.webm'
         else:
             raise ValueError('Please provide a username!')
 
@@ -67,7 +67,7 @@ class TwitterElement(object):
         tweet_canvas = Image.new('RGB', tweet_canvas_size, 'white')
         tweet_canvas.paste(self.i_file, (0,0))
         draw = ImageDraw.Draw(tweet_canvas)
-        font = ImageFont.truetype(CONFIGURE['FONTPATH'], 26, 0)
+        font = ImageFont.truetype(CONFIGURE['FONTPATH'], 22, 0)
         self.prep_tweet(tweet, draw, font)
         draw.text((1000, 340), '@' + self.username, (0,0,0), font)
         self.canvas.paste(tweet_canvas, (40,160))
@@ -87,11 +87,11 @@ class TwitterElement(object):
 
     def merge_tweets(self):
         '''Make the final slideshow'''
-        self.image_clips = [moviepy.editor.ImageClip(img).set_duration(6)\
+        self.image_clips = [moviepy.editor.ImageClip(img)
+                                .set_duration(6)
                             for img in self.tempfiles]
         clip = moviepy.editor.concatenate(self.image_clips)
-        
-        clip.to_videofile(self.slideshow_filename, fps=24)
+        clip.write_videofile(self.slideshow_filename, codec='libvpx')
 
     def create_slideshow(self):
         '''Build the slides and perform the cleanup'''
