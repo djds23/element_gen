@@ -21,3 +21,6 @@
 *.ttf
 *.otf
 __pycache__
+
+#other
+.log
